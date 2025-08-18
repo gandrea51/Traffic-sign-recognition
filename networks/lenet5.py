@@ -21,7 +21,7 @@ def load_data(data_dir, classes):
 
     return X_train, y_train, X_val, y_val, X_test, y_test
 
-#def lenet5(input_shape, classes):
+def lenet5(input_shape, classes):
     '''LeNet 5'''
 
     model = models.Sequential([
@@ -37,7 +37,7 @@ def load_data(data_dir, classes):
     ])
     return model
 
-#def lenet5plus(input_shape, classes):
+def lenet5plus(input_shape, classes):
     '''LeNet 5 PLUS'''
 
     model = models.Sequential([
@@ -194,4 +194,5 @@ print(classification_report(y_true_classes, y_pred_classes))
 
 #model.save('./models/lenet.h5')
 #model.save('./models/lenetplus.h5')
+
 model.save('./models/lenetpro.h5')
