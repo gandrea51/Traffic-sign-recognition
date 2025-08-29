@@ -3,110 +3,83 @@ from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 import numpy as np
 
+def load_images(img_path, size=(32, 32)):
+    '''Function per caricare e preprocessare una immagine'''
+
+    img = image.load_img(img_path, target_size=size)
+    img = image.img_to_array(img) / 255.0
+    return np.expand_dims(img, axis=0)
+
+def predictions(model, image_dictionary):
+    '''Function per le previsioni su un dizionario'''
+
+    results = {}
+    for img_name, img_path in image_dictionary.items():
+        img = load_images(img_path)
+        pred = model.predict(img, verbose=0)
+        results[img_name] = np.argmax(pred)
+    return results
+
+def shows(results):
+    '''Function per i risultati'''
+
+    for name, pred in results.items():
+        print(f"{name}: Classe predetta {pred}")
+
+def shows_predictions(image_dictionary, results):
+    '''Function per mostrare le immagini con la previsione'''
+
+    for name, path in image_dictionary.items():
+        img = image.load_img(path)
+        plt.imshow(img)
+        plt.title(f"{name}: Classe predetta {results[name]}")
+        plt.axis('off')
+        plt.show()
+
 # My photos
-number3 = './images/Prova/3_personal.jpg'
-number9 = './images/Prova/9_personal.jpg'
-number39 = './images/Prova/39_personal.jpg'
-number17 = './images/Prova/17_personal.jpg'
-number31 = './images/Prova/31_personal.jpg'
+my_images = {
+    "Cartello 3": "./images/Prova/3_personal.jpg",
+    "Cartello 9": "./images/Prova/9_personal.jpg",
+    "Cartello 39": "./images/Prova/39_personal.jpg",
+    "Cartello 17": "./images/Prova/17_personal.jpg",
+    "Cartello 31": "./images/Prova/31_personal.jpg"
+}
 
 # Other photos
-number13 = './images/Prova/13_int.jpg'
-number19 = './images/Prova/19_int.jpg'
-number25 = './images/Prova/25_int.jpg'
-number25bis = './images/Prova/25_temp.jpeg'
-number39bis = './images/Prova/39_temp.jpg'
+other_images = {
+    "Cartello 13": "./images/Prova/13_int.jpg",
+    "Cartello 19": "./images/Prova/19_int.jpg",
+    "Cartello 25 (doppio)": "./images/Prova/25_int.jpg",
+    "Cartello 25": "./images/Prova/25_temp.jpeg",
+    "Cartello 39": "./images/Prova/39_temp.jpg"
+}
 
+# Particular photos
+particular_images = {
+    "Cartello 1": "./other/sign_1.jpg",
+    "Cartello 4": "./other/sign_4.jpg",
+    "Cartello 9": "./other/sign_9.jpg",
+    "Cartello 18": "./other/sign_18.jpg",
+    "Cartello 25": "./other/sign_25.jpg",
+    "Cartello 29": "./other/sign_29.jpg",
+    "Cartello 30": "./other/sign_30.jpg",
+    "Cartello 33": "./other/sign_33.jpg",
+    "Cartello 40": "./other/sign_40.jpg"
+}
 
-number3 = image.load_img(number3, target_size=(32, 32))
-number9 = image.load_img(number9, target_size=(32, 32))
-number39 = image.load_img(number39, target_size=(32, 32))
-number17 = image.load_img(number17, target_size=(32, 32))
-number31 = image.load_img(number31, target_size=(32, 32))
-
-number13 = image.load_img(number13, target_size=(32, 32))
-number19 = image.load_img(number19, target_size=(32, 32))
-number25 = image.load_img(number25, target_size=(32, 32))
-number25bis = image.load_img(number25bis, target_size=(32, 32))
-number39bis = image.load_img(number39bis, target_size=(32, 32))
-
-
-number3 = image.img_to_array(number3)
-number9 = image.img_to_array(number9)
-number39 = image.img_to_array(number39)
-number17 = image.img_to_array(number17)
-number31 = image.img_to_array(number31)
-
-number13 = image.img_to_array(number13)
-number19 = image.img_to_array(number19)
-number25 = image.img_to_array(number25)
-number25bis = image.img_to_array(number25bis)
-number39bis = image.img_to_array(number39bis)
-
-
-number3 /= 255.0
-number9 /= 255.0
-number39 /= 255.0
-number17 /= 255.0
-number31 /= 255.0
-
-number13 /= 255.0
-number19 /= 255.0
-number25 /= 255.0
-number25bis /= 255.0
-number39bis /= 255.0
-
-number3 = np.expand_dims(number3, axis=0)
-number9 = np.expand_dims(number9, axis=0)
-number39 = np.expand_dims(number39, axis=0)
-number17 = np.expand_dims(number17, axis=0)
-number31 = np.expand_dims(number31, axis=0)
-
-number13 = np.expand_dims(number13, axis=0)
-number19 = np.expand_dims(number19, axis=0)
-number25 = np.expand_dims(number25, axis=0)
-number25bis = np.expand_dims(number25bis, axis=0)
-number39bis = np.expand_dims(number39bis, axis=0)
-
-# Choose a model
 model = load_model('./models/lenetpro.h5')
 #model = load_model('./models/lenetplus.h5')
 #model = load_model('./models/lenet.h5')
+#model = load_model('./models/net.h5')
 
-my3 = model.predict(number3)
-my9 = model.predict(number9)
-my39 = model.predict(number39)
-my17 = model.predict(number17)
-my31 = model.predict(number31)
+my_results = predictions(model, my_images)
+other_results = predictions(model, other_images)
+particular_results = predictions(model, particular_images)
 
-other13 = model.predict(number13)
-other19 = model.predict(number19)
-other25 = model.predict(number25)
-other251 = model.predict(number25bis)
-other391 = model.predict(number39bis)
+#shows(my_results)
+#shows(other_results)
+#shows(particular_results)
 
-img3 = np.argmax(my3)
-img9 = np.argmax(my9)
-img39 = np.argmax(my39)
-img17 = np.argmax(my17)
-img31 = np.argmax(my31)
-
-img13 = np.argmax(other13)
-img19 = np.argmax(other19)
-img25 = np.argmax(other25)
-img251 = np.argmax(other251)
-img392 = np.argmax(other391)
-
-# My photos
-print(f'Cartello 3: Classe predetta: {img3}')
-print(f'Cartello 9: Classe predetta: {img9}')
-print(f'Cartello 39: Classe predetta: {img39}')
-print(f'Cartello 17: Classe predetta: {img17}')
-print(f'Cartello 31: Classe predetta: {img31}')
-
-# Other photos
-print(f'Cartello 13: Classe predetta: {img13}')
-print(f'Cartello 19: Classe predetta: {img19}')
-print(f'Cartello 25 ruotato: Classe predetta: {img25}')
-print(f'Cartello 25 orizzontale: Classe predetta: {img251}')
-print(f'Cartello 39 new: Classe predetta: {img392}')
+#shows_predictions(my_images, my_results)
+#shows_predictions(other_images, other_results)
+shows_predictions(particular_images, particular_results)
