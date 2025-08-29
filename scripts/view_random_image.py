@@ -6,48 +6,46 @@ import os, random, collections
 def load_dataset(data_dir):
     '''Function per l'upload del dataset'''
 
-    X = np.load(os.path.join(data_dir, 'X_augmented.npy'))
-    Y = np.load(os.path.join(data_dir, 'y_augmented.npy'))
+    X_before = np.load(os.path.join(data_dir, 'X_train.npy'))
+    Y_before = np.load(os.path.join(data_dir, 'y_train.npy'))
+    X_after = np.load(os.path.join(data_dir, 'X_augmented.npy'))
+    Y_after = np.load(os.path.join(data_dir, 'y_augmented.npy'))
 
-    #X = np.load(os.path.join(data_dir, 'X.npy'))
-    #Y = np.load(os.path.join(data_dir, 'Y.npy'))
+    return X_before, Y_before, X_after, Y_after
 
-    print(f'Dataset originale: {X.shape[0]} immagini')
-    return X, Y
+def get_image(X, Y, class_id):
+    '''Function per recuperare la prima immagine di una classe'''
 
-def random_img(X, Y, number=5):
-    '''Function per mostrare un numero di immagini'''
+    for i in range(len(Y)):
+        if Y[i] == class_id:
+            return X[i]
+    return None
 
-    idx = random.sample(range(len(X)), number)
-    plt.figure(figsize=(15, 5))
-    for i, index in enumerate(idx):
-        plt.subplot(1, number, i+1)
-        plt.imshow(X[index])
-        plt.title(f'Classe: {Y[index]}')
-        plt.axis('off')
+def plot_image(X_bef, Y_bef, X_aft, Y_aft, classes):
+    '''Function per il confronto tra immagini'''
+
+    fig, axes = plt.subplots(2, len(classes), figsize=(10, 6))
+    fig.suptitle('Confronto immagini prima e dopo la Data Augm.', fontsize=14)
+    
+    for index, class_id in enumerate(classes):
+        img_initial = get_image(X_bef, Y_bef, class_id)
+        img_augmented = get_image(X_aft, Y_aft, class_id)
+
+        axes[0, index].imshow(img_initial)
+        axes[0, index].set_title(f'Classe {class_id}: Prima')
+        axes[0, index].axis('off')
+
+        axes[1, index].imshow(img_augmented)
+        axes[1, index].set_title(f'Classe {class_id}: Augm.')
+        axes[1, index].axis('off')
     plt.tight_layout()
     plt.show()
-
-def show_by_class(X, Y, class_id, number=3):
-    '''Function per mostrare immagini di una specifica classe'''
-
-    plt.figure(figsize=(number * len(class_id), 3))
-    for i, cid in enumerate(class_id):
-        idx = [j for j in range(len(Y)) if Y[j] == cid]
-        selected = random.sample(idx, min(number, len(idx)))
-        for j, idx in enumerate(selected):
-            plt.subplot(len(class_id), number, i * number + j + 1)
-            plt.imshow(X[idx])
-            plt.title(f'Classe: {class_id}')
-            plt.axis('off')
-    plt.tight_layout()
-    plt.show()
-
 
 data_dir = './dataset'
-#data_dir = './list'
+X_train, Y_train, X_augmented, Y_augmented = load_dataset(data_dir)
 
-X, Y = load_dataset(data_dir)
-random_img(X, Y)
-random_img(X, Y)
-#show_by_class(X, Y, class_id=[7, 27, 30, 41], number=3)
+#classes = [15, 24, 41]
+#classes = [21, 26, 27]
+classes = [0, 32, 37]
+
+plot_image(X_train, Y_train, X_augmented, Y_augmented, classes)
