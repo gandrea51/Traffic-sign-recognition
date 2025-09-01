@@ -41,11 +41,10 @@ def plot_image(X_bef, Y_bef, X_aft, Y_aft, classes):
     plt.tight_layout()
     plt.show()
 
-data_dir = './dataset'
-X_train, Y_train, X_augmented, Y_augmented = load_dataset(data_dir)
+if __name__ == "__main__":
+    X_train, Y_train, X_augmented, Y_augmented = load_dataset('./dataset')
 
-#classes = [15, 24, 41]
-#classes = [21, 26, 27]
-classes = [0, 32, 37]
-
-plot_image(X_train, Y_train, X_augmented, Y_augmented, classes)
+    #classes = [15, 24, 41]
+    #classes = [21, 26, 27]
+    classes = [0, 32, 37]
+    plot_image(X_train, Y_train, X_augmented, Y_augmented, classes)

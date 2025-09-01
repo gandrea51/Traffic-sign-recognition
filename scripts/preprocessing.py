@@ -36,8 +36,8 @@ def crop_image(image, roi):
 def resize_image(image, size=(32, 32)):
     '''Function per il resize dell'immagine'''
 
-    image = image.resize(size)
-    return np.array(image) / 255.0
+    resized = image.resize(size)
+    return np.array(resized) / 255.0
 
 def distribution(Y):
     '''Function per mostrare la distribuzione delle classi'''
@@ -57,50 +57,45 @@ def save_dataset(X, Y, output_dir):
     np.save(os.path.join(output_dir, 'Y.npy'), Y)
     print(f'Dati salvati in {output_dir}')
 
-# Path per i dati
-data_dir = './data'
-output_dir = './list'
 
-# List per immagini e per le etichette
-X = []
-Y = []
+if __name__ == '__main__':
 
-# Loop per ogni cartella
-for folder in range(43):
-    class_path = os.path.join(data_dir, f'{folder:05d}')
+    # List per immagini e per le etichette
+    X = []
+    Y = []
 
-    file_path = os.path.join(class_path, f'GT-{folder:05d}.csv')
-    if not os.path.exists(file_path):
-        print(f'File non trovato: {file_path}')
-        continue
+    # Loop per ogni cartella
+    for folder in range(43):
+        class_path = os.path.join('./data', f'{folder:05d}')
+        file_path = os.path.join(class_path, f'GT-{folder:05d}.csv')
 
-    # Open del file CSV
-    f = pd.read_csv(file_path, sep=";")
-    if not f.empty:
-        row = f.iloc[0]
+        if not os.path.exists(file_path):
+            print(f'File non trovato: {file_path}')
+            continue
+
+        # Open del file CSV
+        f = pd.read_csv(file_path, sep=";")
         
-        image_path = os.path.join(class_path, row['Filename'])
-        roi = (row['Roi.X1'], row['Roi.Y1'], row['Roi.X2'], row['Roi.Y2'])
-        
-        image = load_image(image_path)
-        rectangle_area(image, roi)
+        if not f.empty:
+            for i, row in f.iterrows():
+                image_path = os.path.join(class_path, row['Filename'])
+                roi = (row['Roi.X1'], row['Roi.Y1'], row['Roi.X2'], row['Roi.Y2'])
+                image = load_image(image_path)
 
-    for i, row in f.iterrows():
-        image_path = os.path.join(class_path, row['Filename'])
+                # Mostro solo la prima immagine
+                if i == 0:
+                    rectangle_area(image, roi)
+                
+                # Preprocessing
+                cropped = crop_image(image, (row['Roi.X1'], row['Roi.Y1'], row['Roi.X2'], row['Roi.Y2']))
+                resized = resize_image(cropped)
 
-        image = load_image(image_path)
+                X.append(resized)
+                Y.append(row['ClassId'])
 
-        cropped = crop_image(image, (row['Roi.X1'], row['Roi.Y1'], row['Roi.X2'], row['Roi.Y2']))
-        resized = resize_image(cropped)
-
-        X.append(resized)
-        Y.append(row['ClassId'])
-
-# Conversione delle liste a numpy arrays
-X = np.array(X)
-Y = np.array(Y)
-print(f'{X.shape[0]} immagini, {Y.shape[0]} etichette')
-
-distribution(Y)
-
-save_dataset(X, Y, output_dir)
+    # Conversione delle liste a numpy arrays
+    X = np.array(X)
+    Y = np.array(Y)
+    print(f'{X.shape[0]} immagini, {Y.shape[0]} etichette')
+    distribution(Y)
+    save_dataset(X, Y, './list')

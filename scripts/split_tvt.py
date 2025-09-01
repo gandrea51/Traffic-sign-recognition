@@ -32,11 +32,7 @@ def save(output_dir, X_train, X_val, X_test, y_train, y_val, y_test):
     print(f'Train: {X_train.shape[0]} immagini, Validation: {X_val.shape[0]} immagini, Test: {X_test.shape[0]} immagini')
 
 
-data_dir = './list'
-output_dir = './dataset'
- 
-X, Y = load_dataset(data_dir)
-
-X_train, X_val, X_test, y_train, y_val, y_test = split(X, Y)
-
-save(output_dir, X_train, X_val, X_test, y_train, y_val, y_test)
+if __name__ == "__main__":
+    X, Y = load_dataset('./list')
+    X_train, X_val, X_test, y_train, y_val, y_test = split(X, Y)
+    save('./dataset', X_train, X_val, X_test, y_train, y_val, y_test)

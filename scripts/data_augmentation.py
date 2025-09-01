@@ -103,8 +103,7 @@ def save(X_init, Y_init, X_aug, Y_aug, output_dir):
     np.save(os.path.join(output_dir, 'y_augmented.npy'), Y_new)
     print(f'Dataset augmentato. {X_new.shape[0]} immagini')
 
-data_dir = './dataset'
-
-X, Y = load_dataset(data_dir)
-X_augmented, Y_augmented = data_augmentation(X, Y, treshold=420, size=(32, 32))
-save(X, Y, X_augmented, Y_augmented, data_dir)
+if __name__ == "__main__":
+    X, Y = load_dataset('./dataset')
+    X_augmented, Y_augmented = data_augmentation(X, Y, treshold=420, size=(32, 32))
+    save(X, Y, X_augmented, Y_augmented, './dataset')

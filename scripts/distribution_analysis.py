@@ -18,7 +18,6 @@ def distribution(Y):
     for key, value in sorted(count.items()):
         print(f'Classe {key}: {value} immagini')
 
-data_dir = './dataset'
-
-X, Y = load_dataset(data_dir)
-distribution(Y)
+if __name__ == "__main__":
+    X, Y = load_dataset('./dataset')
+    distribution(Y)
