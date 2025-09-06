@@ -16,9 +16,9 @@ The objective is to train and evaluate CNNs that manage to classify the **43 typ
 
 ---
 
-## 📂 Come consultare il repository
+## 📂 How to consult the repository
 
-La seguente struttura mostra i contenuti principali del repository:
+The following structure shows the main contents of the repository:
 
 ```bash
 GTSRB-Traffic-Sign-Recognition/
