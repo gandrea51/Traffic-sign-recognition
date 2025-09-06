@@ -51,11 +51,27 @@ GTSRB-Traffic-Sign-Recognition/
 ```
 ---
 
+## 📦 Contents of the Repository
+
+This repository **does not** include:
+- The **GTSRB dataset** (you can download it from the [official site](https://benchmark.ini.rub.de/gtsrb_dataset.html)).
+- The **trained CNN models (.h5)** due to size limitations.
+
+It **does** include:
+- 🧩 **CNN definitions** → `networks/` contains the code for all models (LeNet5, LeNet5Plus, LeNet5Pro, etc.).
+- 🛠️ **Preprocessing & testing scripts** → `scripts/` contains the full pipeline for dataset preprocessing, augmentation, and testing.
+- 🖼️ **External images for testing** → `images/` provides ready-to-use samples for evaluating the models.
+- 📄 **Documentation** → `GTSRB_Readme.pdf` explains the entire workflow, models, and results.
+- 📊 **PowerPoint presentation** → high-level summary of the project.
+
+---
+
 ## 🚀 How to run the project
 
 To run it, follow the steps below:
 
-- Clone repository
-- Install all necessary dependencies
-- Start the training by executing the command ```python networks/lenet.py```
-- Perform external image tests with the command ```python scripts/test.py```
+- Clone repository;
+- Install all necessary dependencies;
+- Download the dataset and Preprocess it;
+- Start training by executing the command ```python networks/lenet.py``` and commenting on the lines of code as appropriate;
+- (Optional) Perform external image tests with the command ```python scripts/test.py```.
