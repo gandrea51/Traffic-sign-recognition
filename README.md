@@ -73,5 +73,5 @@ To run it, follow the steps below:
 - Clone repository;
 - Install all necessary dependencies;
 - Download the dataset and Preprocess it;
-- Start training by executing the command ```python networks/lenet.py``` and commenting on the lines of code as appropriate;
+- Start training by executing the command ```python networks/net_name.py``` and commenting on the lines of code as appropriate;
 - (Optional) Perform external image tests with the command ```python scripts/test.py```.
