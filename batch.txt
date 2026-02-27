@@ -1,0 +1,13 @@
+# Test per capire la giusta dimensione di batch e workers
+
+Testing: batch=32 workers=2
+Tempo epoca: 69.23 secondi.
+
+Testing: batch=64 workers=4
+Tempo epoca: 62.19 secondi.
+
+Testing: batch=64 workers=8
+Tempo epoca: 47.39 secondi.
+
+Testing: batch=128 workers=8
+Tempo epoca: 46.86 secondi
